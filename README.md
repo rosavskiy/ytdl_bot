@@ -1,24 +1,48 @@
 # YouTube Download Telegram Bot
 
-A simple Telegram bot that downloads videos from YouTube and sends them directly to your chat.
+Мощный Telegram бот для скачивания видео и аудио с YouTube с расширенными возможностями и интуитивным интерфейсом.
 
-## Features
+## 🎯 Основные возможности
 
-- Download YouTube videos by simply sending a link
-- Supports multiple YouTube URL formats:
-  - `youtube.com/watch?v=...`
-  - `youtu.be/...`
-  - `youtube.com/shorts/...`
-- Automatic quality adjustment for Telegram's 50MB file size limit
-- Progress status updates during download
+- 📹 **Скачивание видео** с YouTube в различных форматах и качестве
+- 🎵 **Извлечение аудио** из видео (только звук)
+- 🎬 **Выбор качества**: HD (до 1080p), SD (до 480p) или только аудио
+- 📊 **Прогресс-бар** в реальном времени при загрузке
+- 📦 **Большие файлы**: автоматическая раздача через HTTP для видео >50МБ
+- 🔄 **Автоконвертация в MP4** для максимальной совместимости с Telegram
+- 📝 **Подробная информация**: название, автор, просмотры, длительность, описание, теги
+- ⚡ **Поддержка YouTube Shorts** и обычных видео
+- 🔒 **Обход ограничений** YouTube API для стабильной работы
+- 🗑️ **Автоочистка**: файлы удаляются после скачивания или через 24 часа
 
-## Prerequisites
+## 🎨 Особенности
 
-- Python 3.10 or higher
-- A Telegram bot token (get one from [@BotFather](https://t.me/BotFather))
-- FFmpeg (optional, for better format support)
+### Интерактивный интерфейс
+При отправке ссылки на YouTube видео бот предложит выбрать качество через удобные кнопки:
+- 🎬 **HD качество** (до 1080p) - для максимального качества
+- 📺 **SD качество** (до 480p) - оптимальный размер файла
+- 🎵 **Только аудио** - экономия трафика для музыки
+- ❌ **Отмена** - отмена операции
 
-## Installation
+### Система раздачи файлов
+Для видео размером более 50МБ (лимит Telegram Bot API):
+- Файл сохраняется на сервере
+- Генерируется уникальная ссылка для скачивания
+- Файл автоматически удаляется после первого скачивания
+- Время жизни файла - 24 часа
+
+### Прогресс загрузки
+- Визуальный прогресс-бар обновляется каждые 5 секунд
+- Показывает процент выполнения
+- Информирует о текущем этапе (загрузка, конвертация, отправка)
+
+## 📋 Требования
+
+- Python 3.10 или выше
+- Telegram бот токен (получить у [@BotFather](https://t.me/BotFather))
+- FFmpeg (опционально, но рекомендуется для конвертации и слияния форматов)
+
+## 🚀 Установка
 
 1. Clone this repository:
    ```bash
@@ -38,36 +62,106 @@ A simple Telegram bot that downloads videos from YouTube and sends them directly
    ```
 
 4. Set up your Telegram bot token:
-   ```bash
-   export TELEGRAM_BOT_TOKEN="your_bot_token_here"
-   ```
+   - Copy `.env.example` to `.env`:
+     ```bash
+     # On Windows PowerShell:
+     Copy-Item .env.example .env
+     
+     # On Linux/macOS:
+     cp .env.example .env
+     ```
+   - Edit `.env` file and replace `your_bot_token_here` with your actual bot token from @BotFather
 
-## Usage
+5. (Optional but recommended) Install FFmpeg for proper format support:
+    - On Windows (via Chocolatey):
+       ```powershell
+       choco install ffmpeg
+       ```
+       If you don't have Chocolatey, download the latest build from:
+       https://www.gyan.dev/ffmpeg/builds/ and add the path with `ffmpeg.exe` to the system `PATH`.
+    - On macOS (Homebrew):
+       ```bash
+       brew install ffmpeg
+       ```
+    - On Linux (Debian/Ubuntu):
+       ```bash
+       sudo apt-get update
+       sudo apt-get install -y ffmpeg
+       ```
 
-1. Start the bot:
-   ```bash
-   python bot.py
-   ```
+    The bot automatically detects FFmpeg. If FFmpeg is missing, it will try to use progressive MP4/WEBM formats without merging.
 
-2. Open your bot in Telegram
+## 📖 Использование
 
-3. Send a YouTube link to download the video
+### Запуск бота
+```bash
+# Активируйте виртуальное окружение
+.\.venv\Scripts\Activate.ps1  # Windows
+source .venv/bin/activate     # Linux/macOS
 
-## Commands
+# Запустите бота
+python bot.py
+```
 
-- `/start` - Welcome message and usage instructions
-- `/help` - Display help information
+### Использование в Telegram
 
-## Limitations
+1. **Запустите бота** - отправьте `/start`
+2. **Отправьте ссылку** на YouTube видео
+3. **Выберите качество** через кнопки
+4. **Получите видео** или ссылку для скачивания
 
-- Maximum video size: 50MB (Telegram API limitation)
-- Videos larger than 50MB will be downloaded in lower quality or rejected
+## 📋 Команды
 
-## Dependencies
+- `/start` - Приветствие и инструкции
+- `/help` - Справка по использованию
 
-- [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot) - Telegram Bot API wrapper
-- [yt-dlp](https://github.com/yt-dlp/yt-dlp) - YouTube video downloader
+## ⚠️ Ограничения
 
-## License
+- **Telegram Bot API**: жесткий лимит 50МБ для прямой отправки
+- **Файлы >50МБ**: автоматически раздаются через HTTP сервер
+- **Время жизни**: 24 часа или до первого скачивания
+- **FFmpeg**: без него ограничен выбор форматов
 
-MIT License
+## 🛠️ Технологии
+
+- [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot) 21.7 - Telegram Bot API обертка
+- [yt-dlp](https://github.com/yt-dlp/yt-dlp) 2024.11.18 - YouTube загрузчик
+- [aiohttp](https://github.com/aio-libs/aiohttp) 3.10.11 - HTTP сервер для раздачи файлов
+- [python-dotenv](https://github.com/theskumar/python-dotenv) 1.0.1 - Управление переменными окружения
+- [FFmpeg](https://ffmpeg.org/) - Конвертация и слияние медиа (опционально)
+
+## 📊 Системные требования
+
+- **Минимум**: 
+  - CPU: 1 ядро
+  - RAM: 512MB
+  - Диск: 5GB свободного места
+  - Python: 3.10+
+
+- **Рекомендуется**:
+  - CPU: 2+ ядра
+  - RAM: 1GB+
+  - Диск: 20GB+ (для временных файлов)
+  - FFmpeg установлен
+
+## 🤝 Вклад в проект
+
+Приветствуются pull requests! Для серьезных изменений сначала откройте issue для обсуждения.
+
+## 📝 Лицензия
+
+MIT License - см. файл LICENSE
+
+## 👤 Автор
+
+**rosavskiy** - [GitHub](https://github.com/rosavskiy)
+
+## 🙏 Благодарности
+
+- Команде [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot)
+- Разработчикам [yt-dlp](https://github.com/yt-dlp/yt-dlp)
+- Сообществу open source
+
+---
+
+**Примечание**: Этот бот предназначен только для личного использования. Убедитесь, что вы соблюдаете авторские права и условия использования YouTube при скачивании контента.

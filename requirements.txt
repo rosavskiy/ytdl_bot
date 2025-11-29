@@ -1,2 +1,4 @@
-python-telegram-bot==20.7
-yt-dlp==2023.11.16
+python-telegram-bot==21.7
+yt-dlp==2024.11.18
+python-dotenv==1.0.1
+aiohttp==3.10.11
